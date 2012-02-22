@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.yank">
+
+	<class name="YankArchive" table="yank_archive">
+			
+		<id name="yankArchiveId" type="int" column="yank_archive_id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<discriminator column="id" insert="false" />
+
+		<property name="datatype" type="java.lang.String" column="datatype"
+				  not-null="true" length="255" />
+
+		<property name="summary" type="java.lang.String" column="summary"
+				  not-null="false" length="255" />
+		
+		<property name="data" type="java.lang.String" column="data"
+				  not-null="true" length="16777215" lazy="true" />
+
+		<many-to-one column="creator" name="creator" class="org.openmrs.User" />
+
+		<property name="dateCreated" type="java.util.Date"
+				  column="date_created" not-null="true" length="19" />
+
+		<many-to-one column="archived_by" name="archivedBy" class="org.openmrs.User" />
+
+		<property name="dateArchived" type="java.util.Date"
+				  column="date_archived" not-null="true" length="19" />
+		
+	</class>
+
+</hibernate-mapping>

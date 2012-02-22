@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <!--
+        See http://www.liquibase.org/manual/home#available_database_refactorings
+        for a list of supported elements and attributes
+    -->
+	
+	<changeSet id="20120210-132800" author="jkeiper" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="yank_yank"/></not>
+		</preConditions>
+		<comment>
+			Add yank table
+		</comment>
+		<createTable tableName="yank_yank">
+			<column name="yank_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="datatype" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="summary" type="varchar(255)" defaultValue="null"/>
+			<column name="data" type="text">
+				<constraints nullable="false"/>
+			</column>
+			<column name="creator" type="int(11)" >
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime" >
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint constraintName="yank_creator"
+			baseTableName="yank_yank" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id"/>
+	</changeSet>
+
+	<changeSet id="20120213-143300" author="jkeiper" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="yank_error"/></not>
+		</preConditions>
+		<comment>
+			Add yank error table
+		</comment>
+		<createTable tableName="yank_error">
+			<column name="yank_error_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="datatype" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="summary" type="varchar(255)" defaultValue="null"/>
+			<column name="data" type="text">
+				<constraints nullable="false"/>
+			</column>
+			<column name="error" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="stacktrace" type="text">
+				<constraints nullable="false"/>
+			</column>
+			<column name="creator" type="int(11)" >
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="attempted_by" type="int(11)">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_attempted" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint constraintName="yank_error_creator"
+			baseTableName="yank_error" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="yank_error_attempter"
+			baseTableName="yank_error" baseColumnNames="attempted_by"
+			referencedTableName="users" referencedColumnNames="user_id"/>
+	</changeSet>
+	
+	<changeSet id="20120213-222000" author="jkeiper" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="yank_archive"/></not>
+		</preConditions>
+		<comment>
+			Add yank archive table
+		</comment>
+		<createTable tableName="yank_archive">
+			<column name="yank_archive_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="datatype" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="summary" type="varchar(255)" defaultValue="null"/>
+			<column name="data" type="text">
+				<constraints nullable="false"/>
+			</column>
+			<column name="creator" type="int(11)" >
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="archived_by" type="int(11)">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_archived" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint constraintName="yank_archive_creator"
+			baseTableName="yank_archive" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id"/>
+		<addForeignKeyConstraint constraintName="yank_archive_archiver"
+			baseTableName="yank_archive" baseColumnNames="archived_by"
+			referencedTableName="users" referencedColumnNames="user_id"/>
+	</changeSet>
+</databaseChangeLog>
